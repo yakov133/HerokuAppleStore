@@ -1,4 +1,4 @@
-require("dotenv").config();
+require("dotenv").config({path:`../.env`});
 const axios = require("axios");
 var mongodb = require("mongodb");
 const { v4: uuidv4 } = require("uuid");
