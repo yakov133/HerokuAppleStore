@@ -32,7 +32,7 @@ function helperTogettheproducts(arr) {
 
 function showCart(data) {
   for (const iterator of data) {
-    console.log(iterator);
+    // console.log(iterator);
     sum += Number(iterator.price);
     // sum += iterator.price;
     element.innerHTML += `<tr id=${iterator.key} onclick = deleteFromDom('${iterator._id}','${iterator.key}','${iterator.price}')>
@@ -48,7 +48,7 @@ function showCart(data) {
 
 makeCart();
 
-
+//צריך לבדוק למה לא נמחק מהמונגו
 const deleteFromDom = function(id,key,price){
     let del = document.getElementById(key);
     del.parentNode.removeChild(del);
@@ -62,6 +62,7 @@ const deleteCartItem = documentID=>{
     .patch("deleteFromCart/61903a03c4163ab1b03e925d",{...documentID})
     .then((response) => {
         console.log("got successfuly deleted");
+        num.innerText = num.innerText - 1;
     })
     .catch((error) => console.log(error));
 }

@@ -1,5 +1,6 @@
 require("dotenv").config({path:`../.env`});
 const axios = require("axios");
+const { log } = require("console");
 var mongodb = require("mongodb");
 const { v4: uuidv4 } = require("uuid");
 const MongoClient = mongodb.MongoClient;
@@ -121,8 +122,8 @@ function updateCart(req, res) {
 }
 
 function deleteFromCart(req, res) {
-  const myquery = req.body;
-  
+  const myquery = {id:req.body.id};
+  console.log(myquery);
   MongoClient.connect(url, function (error, db) {
     if (error) {
       throw error;
@@ -131,9 +132,17 @@ function deleteFromCart(req, res) {
     
     dbo.collection("carts").updateOne(
       { },
-      { $pull: { proudcts: myquery } },
+      { $pull: { proudcts: myquery } }, function (err, result) {
+        if (err) {
+          throw err;
+        }
+        console.log(result);
+        res.status(201).send(result);
+        console.log("1 document updated");
+        db.close();
+      }
     )
-    res.end();
+    // res.end();
   });
   
 }
@@ -250,7 +259,7 @@ function getSpecificProducts(req, res) {
 
   const clientCart = [];
   for (const iterator of req.query.arr) {
-    clientCart.push(JSON.parse(iterator));
+    clientCart.push({id:iterator.id});
   }
   MongoClient.connect(url, function (err, db) {
     if (err) {
